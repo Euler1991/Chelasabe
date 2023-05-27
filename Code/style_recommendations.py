@@ -78,7 +78,7 @@ answers_df = answers_df[(answers_df.style_nulls <= 4) & (answers_df.beer_nulls <
 answers_df.reset_index(drop=True, inplace=True)
 
 comercials = list(beers_dict.values())
-answers_df = answers_df.fillna(answers_df.median())
+answers_df = answers_df.fillna(answers_df.median(), numeric_only=None)
 
 def drunk_distances(form):
     d_na = manhattan_distances([form], answers_df[comercials])

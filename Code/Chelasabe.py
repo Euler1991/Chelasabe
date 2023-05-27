@@ -343,9 +343,9 @@ def sha_sty(n_clicks, vb1, vb2, vb3, vb4, vb5, vb6, vb7, vb8, vb9, vb10, vl1, vl
               Input('tap-dropdown', 'value'))
 def update_map(tap):
     tap_df = sites_df[sites_df.Nombre == tap]
-    token = open(".mapbox_token").read()
+    token = open("mapbox_token.txt").read()
 
-    px.set_mapbox_access_token(open(".mapbox_token").read())
+    px.set_mapbox_access_token(open("mapbox_token.txt").read())
 
     fig = go.Figure(go.Scattermapbox(mode="markers+text",
                                      lon=tap_df['Longitud'].values,
