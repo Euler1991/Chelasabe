@@ -5,7 +5,7 @@ import dash_bootstrap_components as dbc
 from dash import html, dcc, Input, Output, State
 import plotly.graph_objects as go
 import plotly.express as px
-import dash_tabulator
+#import dash_tabulator
 import style_recommendations as sr
 
 sites_df = pd.read_csv('../Datasets/Catálogo_Establecimientos.csv')
@@ -127,7 +127,16 @@ tap_columns=[{"title": "Cerveza",
 
 # ----------------------------------------------------------------------------------------------------------------------#
 # Creación de componentes del dashboard
-
+first_card = dbc.Card(
+    dbc.CardBody(
+        [
+            html.H5("Card title", className="card-title"),
+            html.P("This card has some text content, but not much else"),
+            dbc.Button("Go somewhere", color="primary"),
+        ]
+    )
+)
+"""
 beer_form = dash_tabulator.DashTabulator(id='beer-form',
                                          columns=beer_columns,
                                          data=beer_data)
@@ -139,7 +148,7 @@ craft_form = html.Div([dash_tabulator.DashTabulator(id='craft-form',
 tap_table = dash_tabulator.DashTabulator(id='tap-table',
                                          columns=tap_columns,
                                          data=[])
-
+"""
 mode_dropdown = dbc.Row(dbc.Col(dcc.Dropdown(id='mode_dropdown',
                                              options=[{'label': 'Todos para uno',
                                                        'value':'TPU'},
@@ -148,6 +157,21 @@ mode_dropdown = dbc.Row(dbc.Col(dcc.Dropdown(id='mode_dropdown',
                                              value='TPU'),
                                 width={"size": 10, "offset": 1},
                                 style={"margin-bottom": "15px"}))
+
+hp_button = dbc.Button("Hoppy Places",
+                       id='hp-button',
+                       color='primary',
+                       n_clicks=0)
+
+afo_button = dbc.Button("Todos para uno",
+                        id='afo-button',
+                        color="primary",
+                        n_clicks=0)
+
+ofa_button = dbc.Button("Uno para todos",
+                        id='ofa-button',
+                        color="primary",
+                        n_clicks=0)
 
 tpu_button = dbc.Button("Obtener Recomendaciones",
                         id='compute',
@@ -160,14 +184,16 @@ upt_button = dbc.Button("Compartir gustos",
                         n_clicks=0)
 
 tap_dropdown = dcc.Dropdown(id='tap-dropdown',
-                            options=[{'label':place, 'value':place} for place in sites_df['Nombre']],
-                            value='Apóstol Tap Room')
+                            options=[{'label':place,
+                                      'value':place} for place in sites_df['Nombre']],
+                            value='Hop 3 The Beer Experience')
 
 # ----------------------------------------------------------------------------------------------------------------------#
 # Creación de elementos para el modo "Todos para uno" (principiantes)
 
 comercial = dbc.Row(dbc.Col([html.P('Usa una estrella para las que no te gustan, y cinco para las que más te gustan. Las cervezas que no conozcas déjalas sin estrellas.'),
-                             beer_form],
+                             #beer_form
+                             ],
                             width={"size": 10, "offset": 1},
                             style={"margin-bottom": "15px"}))
 
@@ -177,23 +203,33 @@ craft = dbc.Row(dbc.Col(html.Div(id='craft'),
 
 craft_graph = dcc.Graph(id='craft-graph')
 
-tpu_card = dbc.Card(dbc.CardBody([html.H2("Todos para uno",
-                                          className="card-title",
-                                          style={'textAlign': 'center',
-                                                 'color': colors_imagotipo['brown']}),
-                                  html.P("¿No sabes qué beber?"),
-                                  html.P("Responde el cuestionario de cervezas para recomendarte estilos.")]),
-                    style={'height': '100%'})
+hop_pla_card = dbc.Card(dbc.CardBody([#html.H2("Hoppy Places",
+                                      #        className="card-title",
+                                      #        style={'textAlign': 'center',
+                                      #               'color': colors_imagotipo['yellow']}),
+                                      html.P("¿Nó sabes dónde encontrar cerveza artesanal?"),
+                                      html.P("Checa nuestro mapa de taprooms y boutiques."),
+                                      hp_button]),
+                        style={'height': '100%'})
 
-upt_card = dbc.Card(dbc.CardBody([html.H2("Uno para todos",
-                                          className="card-title",
-                                          style={'textAlign': 'center',
-                                                 'color': colors_imagotipo['brown']}),
-                                  html.P("¿Ya sabes qué estilos te gustan más?"),
-                                  html.P(
-                                      "Responde los cuestionarios de cervezas y estilos para  ayudar a recomendar estilos a usuarios nuevos.")]),
-                    style={'height': '100%'})
+all_for_one_card = dbc.Card(dbc.CardBody([#html.H2("Todos para uno",
+                                          #        className="card-title",
+                                          #        style={'textAlign': 'center',
+                                          #               'color': colors_imagotipo['yellow']}),
+                                          html.P("¿No sabes qué beber?"),
+                                          html.P("Responde el cuestionario de cervezas para recomendarte estilos."),
+                                          afo_button]),
+                            style={'height': '100%'})
 
+one_for_all_card = dbc.Card(dbc.CardBody([#html.H2("Uno para todos",
+                                          #        className="card-title",
+                                          #        style={'textAlign': 'center',
+                                          #               'color': colors_imagotipo['yellow']}),
+                                          html.P("¿Ya sabes qué estilos te gustan más?"),
+                                          html.P("Responde los cuestionarios de cervezas y estilos para  ayudar a recomendar estilos a usuarios nuevos."),
+                                          ofa_button]),
+                            style={'height': '100%'})
+"""
 cards_tpu_utp = dbc.Row([dbc.Col(tpu_card,
                                  width=5),
                          dbc.Col(upt_card,
@@ -201,7 +237,7 @@ cards_tpu_utp = dbc.Row([dbc.Col(tpu_card,
                         justify='center',
                         className="h-25",
                         style={"margin-bottom": "15px"})
-
+"""
 tap_networks = html.Div([html.A("Facebook",
                                 id= 'tap-fb',
                                 target="_blank"),
@@ -220,20 +256,27 @@ hoppy_places = dbc.Row(dbc.Col([html.H2("Hoppy Places",
                                        style={'textAlign': 'center',
                                               'color': colors_imagotipo['brown'],
                                               "margin-top": "15px"}),
-                                tap_table,
+                                #tap_table,
                                 dcc.Graph(id='beer-map'),
                                 tap_networks],
                                width={"size": 10, "offset": 1}))
-#style={"margin-bottom": "15px"}
-# ----------------------------------------------------------------------------------------------------------------------#
-# Dashboard
+#-----------------------------------------------------------------------------------#
+#Dashboard
 app = dash.Dash(external_stylesheets=[dbc.themes.SKETCHY])
 server = app.server
 
 app.layout = html.Div([html.H1('Chelasabe:Pienso luego pisto',
                                style={'textAlign': 'center',
                                       'color': colors_imagotipo['yellow']}),
-                       cards_tpu_utp,
+                       html.Div([hop_pla_card],
+                                className='mb-3'),
+                       html.Div([all_for_one_card],
+                                className='mb-3'),
+                       html.Div([one_for_all_card],
+                                className='mb-3')
+                       ])
+"""
+cards_tpu_utp,
                        mode_dropdown,
                        comercial,
                        html.Div(id='tpu-button',
@@ -249,11 +292,11 @@ app.layout = html.Div([html.H1('Chelasabe:Pienso luego pisto',
                                        'justify-content': 'center',
                                        "margin-bottom": "15px"}),
                        html.Hr(),
-                       hoppy_places])
+                       hoppy_places
+"""
 
-# ----------------------------------------------------------------------------------------------------------------------#
-# Funciones y Callbacks
-
+#----------------------------------------------------------------------------------------------------------------------#
+#Funciones y Callbacks
 def render_recommendations(style_scores):
     style_avg = sum(style_scores) / len(style_scores)
     fig = go.Figure()
@@ -293,7 +336,6 @@ def render_recommendations(style_scores):
 
     fig.update_xaxes(range=[0, 5],
                      constrain='domain')
-
     return fig
 
 
@@ -305,7 +347,7 @@ def define_button(mode_value):
     if mode_value == 'TPU':
         return tpu_button, '', craft_graph
     else:
-        return '', upt_button, craft_form
+        return '', upt_button, ''#craft_form
 
 
 @app.callback(Output('craft-graph', 'figure'),
@@ -363,9 +405,8 @@ def update_map(tap):
                               'zoom': 13},
                       showlegend=False,
                       margin=dict(t=20, b=20, l=0, r=0))
-
     return fig
-
+"""
 @app.callback([Output('tap-estatus','children'),
                Output('tap-table', 'data'),
                Output('tap-fb', 'href'),
@@ -384,9 +425,8 @@ def update_tap_info(tap):
     else:
         estatus = 'Tap no disponibe por el momento'
     return estatus, tap_data, site_info['Facebook'].values[0], site_info['Instagram'].values[0]
-
-# ----------------------------------------------------------------------------------------------------------------------#
+"""
+#----------------------------------------------------------------------------------------------------------------------#
 # Código para iniciar el dashboard
-
 if __name__ == '__main__':
     app.run_server()
