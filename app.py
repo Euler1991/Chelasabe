@@ -98,24 +98,6 @@ from data import CERVEZAS_COMERCIALES, ESTILOS_ARTESANAL, NOTAS_AROMA, NOTAS_SAB
 from db import get_conn, init_db, save_advanced_user, get_advanced_users
 from matching import find_similar_users, build_style_recommendation
 
-import os
-st.sidebar.markdown("### 🔧 Debug")
-st.sidebar.write("DATABASE_URL presente:", bool(os.environ.get("DATABASE_URL", "")))
-from db import USE_POSTGRES, POSTGRES_IMPORT_ERROR
-st.sidebar.write("USE_POSTGRES:", USE_POSTGRES)
-if POSTGRES_IMPORT_ERROR:
-    st.sidebar.error(f"Postgres falló: {POSTGRES_IMPORT_ERROR}")
-try:
-    conn = get_conn()
-    cur = conn.cursor()
-    cur.execute("SELECT COUNT(*) FROM usuarios_avanzados")
-    count = cur.fetchone()[0]
-    cur.close()
-    conn.close()
-    st.sidebar.success(f"✅ BD OK — {count} registros")
-except Exception as e:
-    st.sidebar.error(f"❌ Error BD: {e}")
-
 init_db()
 
 # ── Session state ─────────────────────────────────────────────────────────────
@@ -277,7 +259,7 @@ def seccion_estilos_artesanal(prefix=""):
 def show_principiante_quiz():
     st.markdown('<div class="main-title" style="font-size:2rem;">🍺 Chelasabe</div>', unsafe_allow_html=True)
     st.markdown("### 👶 Descubre tu perfil cervecero")
-    st.progress(0.33, text="Paso 1 de 2")
+    #st.progress(0.33, text="Paso 1 de 2")
 
     nombre = seccion_nombre("p_")
     ratings_com = seccion_comerciales("p_")
@@ -367,7 +349,7 @@ def get_estilo_info(estilo_id):
 def show_avanzado_quiz():
     st.markdown('<div class="main-title" style="font-size:2rem;">🍺 Chelasabe</div>', unsafe_allow_html=True)
     st.markdown("### 🧠 Registra tu perfil de catador")
-    st.progress(0.66, text="Cuestionario completo")
+    #st.progress(0.66, text="Cuestionario completo")
 
     nombre = seccion_nombre("a_")
     ratings_com = seccion_comerciales("a_")
