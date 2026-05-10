@@ -105,6 +105,16 @@ st.sidebar.write("USE_POSTGRES:", bool(os.environ.get("DATABASE_URL", "")))
 
 init_db()
 
+try:
+    from db import get_conn
+    with get_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute("SELECT COUNT(*) FROM usuarios_avanzados")
+            count = cur.fetchone()[0]
+    st.sidebar.success(f"✅ Supabase OK — {count} registros")
+except Exception as e:
+    st.sidebar.error(f"❌ Error: {e}")
+
 # ── Session state ─────────────────────────────────────────────────────────────
 def reset_state():
     for k in list(st.session_state.keys()):
