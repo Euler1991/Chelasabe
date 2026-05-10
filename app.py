@@ -101,25 +101,22 @@ from matching import find_similar_users, build_style_recommendation
 import os
 st.sidebar.markdown("### 🔧 Debug")
 st.sidebar.write("DATABASE_URL presente:", bool(os.environ.get("DATABASE_URL", "")))
-st.sidebar.write("USE_POSTGRES:", bool(os.environ.get("DATABASE_URL", "")))
+from db import USE_POSTGRES, POSTGRES_IMPORT_ERROR
+st.sidebar.write("USE_POSTGRES:", USE_POSTGRES)
+if POSTGRES_IMPORT_ERROR:
+    st.sidebar.error(f"Postgres falló: {POSTGRES_IMPORT_ERROR}")
+try:
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM usuarios_avanzados")
+    count = cur.fetchone()[0]
+    cur.close()
+    conn.close()
+    st.sidebar.success(f"✅ BD OK — {count} registros")
+except Exception as e:
+    st.sidebar.error(f"❌ Error BD: {e}")
 
 init_db()
-
-try:
-    from db import get_conn
-    with get_conn() as conn:
-        with conn.cursor() as cur:
-            cur.execute("SELECT COUNT(*) FROM usuarios_avanzados")
-            count = cur.fetchone()[0]
-    st.sidebar.success(f"✅ Supabase OK — {count} registros")
-except Exception as e:
-    st.sidebar.error(f"❌ Error: {e}")
-
-try:
-    import psycopg2
-    st.sidebar.write("psycopg2 importado:", psycopg2.__version__)
-except Exception as e:
-    st.sidebar.error(f"psycopg2 ERROR: {e}")
 
 # ── Session state ─────────────────────────────────────────────────────────────
 def reset_state():
