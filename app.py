@@ -115,6 +115,12 @@ try:
 except Exception as e:
     st.sidebar.error(f"❌ Error: {e}")
 
+try:
+    import psycopg2
+    st.sidebar.write("psycopg2 importado:", psycopg2.__version__)
+except Exception as e:
+    st.sidebar.error(f"psycopg2 ERROR: {e}")
+
 # ── Session state ─────────────────────────────────────────────────────────────
 def reset_state():
     for k in list(st.session_state.keys()):
