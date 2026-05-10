@@ -98,6 +98,11 @@ from data import CERVEZAS_COMERCIALES, ESTILOS_ARTESANAL, NOTAS_AROMA, NOTAS_SAB
 from db import init_db, save_advanced_user, get_advanced_users
 from matching import find_similar_users, build_style_recommendation
 
+import os
+st.sidebar.markdown("### 🔧 Debug")
+st.sidebar.write("DATABASE_URL presente:", bool(os.environ.get("DATABASE_URL", "")))
+st.sidebar.write("USE_POSTGRES:", bool(os.environ.get("DATABASE_URL", "")))
+
 init_db()
 
 # ── Session state ─────────────────────────────────────────────────────────────
