@@ -95,7 +95,7 @@ footer {visibility: hidden;}
 
 # ── Data & DB ─────────────────────────────────────────────────────────────────
 from data import CERVEZAS_COMERCIALES, ESTILOS_ARTESANAL, NOTAS_AROMA, NOTAS_SABOR
-from db import init_db, save_advanced_user, get_advanced_users
+from db import get_conn, init_db, save_advanced_user, get_advanced_users
 from matching import find_similar_users, build_style_recommendation
 
 import os
